@@ -15,12 +15,12 @@ RUN yum update -y \
     # zlib-devel && \
  && yum clean all
 
-WORKDIR opt
-
 # Install Python
 RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz
 RUN tar xzf Python-${PYTHON_VERSION}.tgz
-RUN cd Python-${PYTHON_VERSION} ; ./configure --enable-optimizations ; make altinstall
+RUN cd Python-${PYTHON_VERSION} \
+ && ./configure --enable-optimizations \
+ && make altinstall
 RUN rm Python-${PYTHON_VERSION}.tgz \
  && rm -rf Python-${PYTHON_VERSION}
 RUN python3.8 -V
@@ -34,8 +34,6 @@ RUN pip -V
 # Install boto3
 RUN python3.8 -m pip install boto3
 
-# ADD package.sh /
+ADD package.sh /
 
-# ENTRYPOINT ["/package.sh"]
-
-CMD python -c "print('hello world')"
+ENTRYPOINT ["/package.sh"]
