@@ -1,7 +1,7 @@
 # Strongly inspired by https://medium.com/@niklongstone/how-to-build-an-aws-lambda-function-with-python-3-7-the-right-way-21888e2edbe8
 FROM amazonlinux:2018.03
 
-ENV PYTHON_VERSION=3.8.2
+ENV PYTHON_VERSION=3.7.7
 
 RUN yum update -y \
  && yum -y install \
@@ -11,8 +11,6 @@ RUN yum update -y \
     tar \
     wget \
     zip \
-    # bzip2-devel \
-    # zlib-devel && \
  && yum clean all
 
 # Install Python
@@ -23,16 +21,13 @@ RUN cd Python-${PYTHON_VERSION} \
  && make altinstall
 RUN rm Python-${PYTHON_VERSION}.tgz \
  && rm -rf Python-${PYTHON_VERSION}
-RUN python3.8 -V
+RUN python3.7 -V
 
 # Install pip
 RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python3.8 get-pip.py
+RUN python3.7 get-pip.py
 RUN rm get-pip.py
 RUN pip -V
-
-# Install boto3
-RUN python3.8 -m pip install boto3
 
 ADD package.sh /
 
